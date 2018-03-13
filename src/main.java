@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
@@ -9,11 +10,16 @@ import javax.swing.JToolBar;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextArea;
 import java.awt.Panel;
 import java.awt.TextArea;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.awt.event.ActionEvent;
+import net.miginfocom.swing.MigLayout;
 
 public class main extends JFrame {
 
@@ -45,13 +51,15 @@ public class main extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new MigLayout("", "[561px]", "[27px][326px][80px]"));
 		
 		JToolBar toolBar = new JToolBar();
-		toolBar.setBounds(5, 5, 561, 27);
-		contentPane.add(toolBar);
+		contentPane.add(toolBar, "cell 0 0,grow");
 		
 		JButton btnNewButton = new JButton("Open");
+		
+		
+		
 		toolBar.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Save");
@@ -66,15 +74,46 @@ public class main extends JFrame {
 		toolBar.add(rdbtnNewRadioButton_1);
 		justification.add(rdbtnNewRadioButton_1);
 		
-		TextArea textArea = new TextArea();
-		textArea.setBounds(5, 364, 561, 80);
+		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
-		contentPane.add(textArea);
+		contentPane.add(textArea, "cell 0 2,grow");
 		
-		TextArea textArea_1 = new TextArea();
-		textArea_1.setBounds(5, 32, 561, 326);
+		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setEditable(false);
-		contentPane.add(textArea_1);
-	}
+		contentPane.add(textArea_1, "cell 0 1,grow");
 
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			JFileChooser filepicker;
+			File textfile;
+			String filename;
+			FileReader fread;
+			BufferedReader buffreader;
+			public void actionPerformed(ActionEvent e) // file selection block
+			{
+
+				filepicker = new JFileChooser();
+				filepicker.showOpenDialog(null);
+				
+				if(!(filepicker.getSelectedFile()==null)) //stops null poiner exeption on cancle
+				{
+					textfile = filepicker.getSelectedFile();
+					filename = textfile.getAbsolutePath();
+					
+					try 
+					{
+						fread = new FileReader(filename);
+						buffreader = new BufferedReader(fread);
+						textArea_1.read(buffreader, null);
+						buffreader.close();
+						textArea_1.requestFocus();
+					}
+					catch(Exception exeption1)
+					{
+						JOptionPane.showMessageDialog(null, "Error in reading file, exeption:" + exeption1);
+					}
+				}
+			}
+		});
+	}
 }
