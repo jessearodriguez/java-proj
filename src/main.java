@@ -89,7 +89,7 @@ public class main extends JFrame {
 		textArea_1.setEditable(false);
 		scrollPane_1.setViewportView(textArea_1);
 
-		btnNewButton.addActionListener(new ActionListener() 
+		btnNewButton.addActionListener(new ActionListener() //open button interrupt
 		{
 			JFileChooser filepicker;
 			File textfile;
