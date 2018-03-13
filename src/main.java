@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.JScrollPane;
 
 public class main extends JFrame {
 
@@ -47,11 +48,11 @@ public class main extends JFrame {
 	 */
 	public main() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 589, 496);
+		setBounds(100, 100, 709, 567);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[561px]", "[27px][326px][80px]"));
+		contentPane.setLayout(new MigLayout("", "[561px,grow]", "[27px][326px,grow][80px,grow]"));
 		
 		JToolBar toolBar = new JToolBar();
 		contentPane.add(toolBar, "cell 0 0,grow");
@@ -74,13 +75,19 @@ public class main extends JFrame {
 		toolBar.add(rdbtnNewRadioButton_1);
 		justification.add(rdbtnNewRadioButton_1);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, "cell 0 1,grow");
+		
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
-		contentPane.add(textArea, "cell 0 2,grow");
+		scrollPane.setViewportView(textArea);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		contentPane.add(scrollPane_1, "cell 0 2,grow");
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setEditable(false);
-		contentPane.add(textArea_1, "cell 0 1,grow");
+		scrollPane_1.setViewportView(textArea_1);
 
 		btnNewButton.addActionListener(new ActionListener() 
 		{
@@ -104,9 +111,9 @@ public class main extends JFrame {
 					{
 						fread = new FileReader(filename);
 						buffreader = new BufferedReader(fread);
-						textArea_1.read(buffreader, null);
+						textArea.read(buffreader, null);
 						buffreader.close();
-						textArea_1.requestFocus();
+						textArea.requestFocus();
 					}
 					catch(Exception exeption1)
 					{
