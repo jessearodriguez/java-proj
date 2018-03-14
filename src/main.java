@@ -157,13 +157,29 @@ public class main extends JFrame {
 					try 
 					{
 						output = new PrintWriter(filepicker.getSelectedFile());
-						output.write(textArea.getText()); //reads text from textarea, set in the other interupt
-						//System.out.print(textArea.getText()); // outputs correctly in console, but dosnt save correctly in .txt file
+						
+
+						char letter;
+						String text = textArea.getText();
+						
+						for(int i =0; i <text.length();i++) //formats new lines correctly, iterates through the entire text
+						{
+							letter = text.charAt(i);
+							if(letter == '\n')
+							{
+								output.println();
+							}
+							else
+							{
+								output.append(letter);
+							}
+						}
+						
 						output.close();
 					}
 					catch(Exception exeption1)
 					{
-						JOptionPane.showMessageDialog(null, "Error in reading file, exeption:" + exeption1);
+						JOptionPane.showMessageDialog(null, "Error in saving file, exeption:" + exeption1);
 					}
 					
 					
