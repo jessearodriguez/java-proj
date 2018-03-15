@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.JRadioButton;
@@ -67,6 +68,7 @@ public class main extends JFrame {
 		toolBar.add(btnNewButton_1);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Left justification");
+
 		toolBar.add(rdbtnNewRadioButton);
 		rdbtnNewRadioButton.setSelected(true);
 		justification.add(rdbtnNewRadioButton);
@@ -79,7 +81,7 @@ public class main extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, "cell 0 1,grow");
 		
-		JTextArea textArea = new JTextArea();// top text box
+		final JTextArea textArea = new JTextArea();// top text box
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		
@@ -93,6 +95,7 @@ public class main extends JFrame {
 
 		
 		final JFileChooser filepicker= new JFileChooser();
+		
 		final Helper helper = new Helper(); //helper object that calls all methods
 		
 		rdbtnNewRadioButton_1.addActionListener(new ActionListener() //right justify radio button
@@ -103,6 +106,13 @@ public class main extends JFrame {
 			}
 		});
 		
+		rdbtnNewRadioButton.addActionListener(new ActionListener() //left justify radio button
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				textArea.setText(helper.ljustify(textArea.getText()));
+			}
+		});
 		btnNewButton.addActionListener(new ActionListener() //open button interrupt
 		{
 			
@@ -119,8 +129,7 @@ public class main extends JFrame {
 			public void actionPerformed(ActionEvent e) // file selection block
 			{
 
-				
-				
+			
 				filepicker.showOpenDialog(null);
 				
 				if(!(filepicker.getSelectedFile()==null)) //stops null poiner exeption on cancel
