@@ -147,7 +147,10 @@ public class main extends JFrame {
 						text = builder.toString();//pass this string to the formatting method, multiple method calls here for analysis too.
 						
 						helper.statcalc(textArea_1,text);
-						textArea.setText(text);
+						
+						textArea.setText(helper.ljustify(text));
+						
+						//textArea.setText(text);
 						
 						buffreader.close();
 						fread.close();
