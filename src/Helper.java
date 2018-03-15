@@ -104,15 +104,38 @@ public class Helper //dump all helper methods here
 		return output;
 	}
 
-	
-	public void statcalc(JTextArea textArea_1,String text)
+	public int preemptycalc(String text)
+	{
+		int empty=0;
+		char prev = 0; 
+
+        char letter = text.charAt(0);
+
+		 for(int i = 0; i < text.length(); i++)
+		 {
+			
+	        if(i > 0)	
+	        {
+	        	prev = text.charAt(i - 1);
+	        }	
+	        letter = text.charAt(i);
+			if(((prev == '\n') && ( (letter == '\n') || (letter == '\0') ) ))
+	    	{
+	    		empty++;
+	    	}
+	    
+		 }
+
+		return empty;
+	}
+	public void statcalc(JTextArea textArea_1,String text,int empty)
 	{
 		textArea_1.setText("");//clears text area in preparation for next analysis
 		
 		//stats to be returned
 		int wordspr = 0;
         int linespr = 0;
-        int emptyln = 0;
+        int emptyln = empty;
         double aveli = 0;
         double avewo = 0;
         int i = 0;
@@ -152,11 +175,12 @@ public class Helper //dump all helper methods here
         		linespr++;
         	}
         	//emptyln
+        	/*
         	if(( (prev == '\n') && ( (letter == '\n') || (letter == '\0') ) ))
         	{
         		emptyln++;
         	}
-        	
+        	*/
         }
         //calculating averages
         size = linespr - emptyln;
@@ -219,36 +243,57 @@ public class Helper //dump all helper methods here
 	}
 
 
-	public void formatText() throws FileNotFoundException
+	public String formatText(String text) //assuming all first spaces removed by ljustify
 	{
-		String inputLine = "";
-		String outputLine = "";
+		StringBuilder input = new StringBuilder();
+		
 		int WordLimit = 80;
+		int currlincount=0; //current line count
+		int lsp; //last space position
+		char lastchar=0;
+		int j;
 		
-		FileReader fr= new FileReader("fileNameHere");
-		Scanner scan = new Scanner(fr);
-		StringBuilder buffer = new StringBuilder(WordLimit);
+		for(int i =0;i<text.length();i++)
+		{
+			if(text.charAt(i)!='\n')
+			{
+				if((text.charAt(i)==lastchar)&&(lastchar==' ')) {}
+				else
+				{
+					input.append(text.charAt(i)); //append all characters
+					lastchar = text.charAt(i);
+					currlincount++; //increase count for line word count
+					
+					if(currlincount>=80)
+					{
+						j = i;
+						while(text.charAt(j)!= ' ')//navigates to the last space
+						{
+							j--;
+						}
+						i=j;
+								
+						input= new StringBuilder(input.substring(0,j)); //goes back to first space available
+						input.append("\n");
+						currlincount = 0;
+					}
+				}
+			}
+			else 
+				{
+					if(lastchar=='\n') {}
+					else 
+					{
+						currlincount = 0; //if new line detected, reset char count to 0
+						input.append(text.charAt(i));
+						lastchar = text.charAt(i);
+					}
+					
+				}
+			
+		}
 
-        while (scan.hasNextLine()) {
-            Scanner scan2 = new Scanner(scan.nextLine());
-            while (scan2.hasNext()) {
-                String nextWord = scan2.next();
-                if ((buffer.length() + nextWord.length() + 1) > WordLimit) {
-                    buffer.append('\n');
-                    System.out.print(buffer.toString());
-
-                    buffer = new StringBuilder(nextWord);
-                }
-                else {
-                    buffer.append((buffer.length() == 0 ? "" : " ") + nextWord);
-                }
-            }
-        }
-
-        if (buffer.length() > 0) {
-            System.out.print(buffer.toString() + "\n"); // random
-        }
-		
+        return input.toString();
 	}
 
 }
