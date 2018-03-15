@@ -92,6 +92,7 @@ public class main extends JFrame {
 
 		
 		final JFileChooser filepicker= new JFileChooser();
+		final Helper helper = new Helper(); //helper object that calls all methods
 		
 		btnNewButton.addActionListener(new ActionListener() //open button interrupt
 		{
@@ -104,9 +105,12 @@ public class main extends JFrame {
 			
 			StringBuilder builder = new StringBuilder();
 			
+		
+			
 			public void actionPerformed(ActionEvent e) // file selection block
 			{
 
+				helper.rjustify("1\n2\n3\n4\n5\n6\n\n");
 				
 				filepicker.showOpenDialog(null);
 				
@@ -119,10 +123,12 @@ public class main extends JFrame {
 					try 
 					{
 						fread = new FileReader(filename);
-						buffreader = new BufferedReader(fread); //need a method here to read the formatted text into textarea.read
-					
+						buffreader = new BufferedReader(fread); 
 						while((text = buffreader.readLine()) != null) builder.append(text).append("\n");
-						text = builder.toString();
+						
+						text = builder.toString();//pass this string to the formatting method, multiple method calls here for analysis too.
+						
+						helper.statcalc(textArea_1);
 						textArea.setText(text);
 						
 						buffreader.close();
