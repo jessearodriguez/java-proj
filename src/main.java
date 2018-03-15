@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.JRadioButton;
@@ -67,11 +68,13 @@ public class main extends JFrame {
 		toolBar.add(btnNewButton_1);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Left justification");
+
 		toolBar.add(rdbtnNewRadioButton);
 		rdbtnNewRadioButton.setSelected(true);
 		justification.add(rdbtnNewRadioButton);
 		
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Right Justification");
+
 		toolBar.add(rdbtnNewRadioButton_1);
 		justification.add(rdbtnNewRadioButton_1);
 		
@@ -93,6 +96,23 @@ public class main extends JFrame {
 		
 		final JFileChooser filepicker= new JFileChooser();
 		
+		final Helper helper = new Helper(); //helper object that calls all methods
+		
+		rdbtnNewRadioButton_1.addActionListener(new ActionListener() //right justify radio button
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				textArea.setText(helper.rjustify(textArea.getText()));
+			}
+		});
+		
+		rdbtnNewRadioButton.addActionListener(new ActionListener() //left justify radio button
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				textArea.setText(helper.ljustify(textArea.getText()));
+			}
+		});
 		btnNewButton.addActionListener(new ActionListener() //open button interrupt
 		{
 			
@@ -104,10 +124,12 @@ public class main extends JFrame {
 			
 			StringBuilder builder = new StringBuilder();
 			
+		
+			
 			public void actionPerformed(ActionEvent e) // file selection block
 			{
 
-				
+			
 				filepicker.showOpenDialog(null);
 				
 				if(!(filepicker.getSelectedFile()==null)) //stops null poiner exeption on cancel
@@ -119,10 +141,12 @@ public class main extends JFrame {
 					try 
 					{
 						fread = new FileReader(filename);
-						buffreader = new BufferedReader(fread); //need a method here to read the formatted text into textarea.read
-					
+						buffreader = new BufferedReader(fread); 
 						while((text = buffreader.readLine()) != null) builder.append(text).append("\n");
-						text = builder.toString();
+						
+						text = builder.toString();//pass this string to the formatting method, multiple method calls here for analysis too.
+						
+						helper.statcalc(textArea_1);
 						textArea.setText(text);
 						
 						buffreader.close();
@@ -157,13 +181,29 @@ public class main extends JFrame {
 					try 
 					{
 						output = new PrintWriter(filepicker.getSelectedFile());
-						output.write(textArea.getText()); //reads text from textarea, set in the other interupt
-						//System.out.print(textArea.getText()); // outputs correctly in console, but dosnt save correctly in .txt file
+						
+
+						char letter;
+						String text = textArea.getText();
+						
+						for(int i =0; i <text.length();i++) //formats new lines correctly, iterates through the entire text
+						{
+							letter = text.charAt(i);
+							if(letter == '\n')
+							{
+								output.println();
+							}
+							else
+							{
+								output.append(letter);
+							}
+						}
+						
 						output.close();
 					}
 					catch(Exception exeption1)
 					{
-						JOptionPane.showMessageDialog(null, "Error in reading file, exeption:" + exeption1);
+						JOptionPane.showMessageDialog(null, "Error in saving file, exeption:" + exeption1);
 					}
 					
 					
