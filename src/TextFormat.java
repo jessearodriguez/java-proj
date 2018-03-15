@@ -32,7 +32,7 @@ public class TextFormat
         }
 
         if (buffer.length() > 0) {
-            System.out.print(buffer.toString() + "\n");
+            System.out.print(buffer.toString() + "\n"); // random
         }
 		
 	}
