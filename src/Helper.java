@@ -8,9 +8,8 @@ public class Helper //dump all helper methods here
 {
 	public String rjustify(String input) //assuming max is 80 characters per line, already formatted, justifies right
 	{
-
 		String[] in = input.split("\\r?\\n",-1); //handles windows and java new line decleration, splits every line into its own array, including empty lines
-		int distto80;//distance to 80 chars
+		//int distto80;//distance to 80 chars
 		String output = "";
 		/*
 		for(int i =0; i < in.length;i++) //performs shifting for right justification for each line
@@ -247,9 +246,7 @@ public class Helper //dump all helper methods here
 	{
 		StringBuilder input = new StringBuilder();
 		
-		int WordLimit = 80;
 		int currlincount=0; //current line count
-		int lsp; //last space position
 		char lastchar=0;
 		int j;
 		
