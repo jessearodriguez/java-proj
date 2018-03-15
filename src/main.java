@@ -72,6 +72,7 @@ public class main extends JFrame {
 		justification.add(rdbtnNewRadioButton);
 		
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Right Justification");
+
 		toolBar.add(rdbtnNewRadioButton_1);
 		justification.add(rdbtnNewRadioButton_1);
 		
@@ -94,6 +95,14 @@ public class main extends JFrame {
 		final JFileChooser filepicker= new JFileChooser();
 		final Helper helper = new Helper(); //helper object that calls all methods
 		
+		rdbtnNewRadioButton_1.addActionListener(new ActionListener() //right justify radio button
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				textArea.setText(helper.rjustify(textArea.getText()));
+			}
+		});
+		
 		btnNewButton.addActionListener(new ActionListener() //open button interrupt
 		{
 			
@@ -110,7 +119,7 @@ public class main extends JFrame {
 			public void actionPerformed(ActionEvent e) // file selection block
 			{
 
-				helper.rjustify("1\n2\n3\n4\n5\n6\n\n");
+				
 				
 				filepicker.showOpenDialog(null);
 				

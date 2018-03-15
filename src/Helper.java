@@ -4,19 +4,38 @@ public class Helper //dump all helper methods here
 {
 	public String rjustify(String input) //assuming max is 80 characters per line, already formatted, justifies right
 	{
-		System.out.print(input);
-		
+
 		String[] in = input.split("\\r?\\n",-1); //handles windows and java new line decleration, splits every line into its own array, including empty lines
+		int distto80;//distance to 80 chars
+		String output = "";
 		
-		for(int i =0; i < in.length;i++)
+		for(int i =0; i < in.length;i++) //performs shifting for right justification for each line
 		{
 			
+			if((in[i].length()==80)||(in[i].length()==0)||in[i].length()>80) {}//do nothing if string is full, or string is a new line, or exceeds max characters
+			else if(in[i].length()<80)
+			{
+				distto80 = 80-in[i].length();
+				for(int j = 0; j<distto80;j++)
+				{
+					in[i] = " " + in[i]; //adds spaces to the start needed until the words line up.
+				}
+			}
 			
-			System.out.print("content of line " + i + " is " + in[i]+"\n");
+
 		}
 		
-		
-		return in.toString();
+
+		for(int i = 0; i < in.length;i++) // rebuilds string from string array
+		{
+			if(in[i].length() == 0) output = output + "\n"; //new line
+			else
+			{
+				output = output + in[i] + "\n";
+			}
+
+		}
+		return output;
 	}
 	
 	
