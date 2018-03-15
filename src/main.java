@@ -78,7 +78,7 @@ public class main extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, "cell 0 1,grow");
 		
-		JTextArea textArea = new JTextArea();// top text box
+		final JTextArea textArea = new JTextArea();// top text box
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		
