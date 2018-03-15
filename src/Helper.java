@@ -35,6 +35,7 @@ public class Helper //dump all helper methods here
 			}
 
 		}
+		output=output.substring(0, output.length()-1);
 		return output;
 	}
 	
@@ -54,4 +55,54 @@ public class Helper //dump all helper methods here
         textArea_1.append("Average Words Per Line: " + avewo + "\n");
 	}
 
+	public String ljustify(String input)//assuming max is 80 characters per line, already formatted, justifies left
+	{
+		String[] in = input.split("\\r?\\n",-1); //handles windows and java new line decleration, splits every line into its own array, including empty lines
+		
+		
+		
+		String output = "";
+		
+		for(int i =0; i < in.length;i++) //performs shifting for left justification for each line
+		{
+			if(in[i].length()>80||in[i].length()==0) {}
+			else 
+			{
+				int slength = in[i].length();
+				
+				for(int j = 0;j <slength;j++)
+				{
+					if(in[i].charAt(j)==' ')
+					{
+						in[i]=in[i].substring(j+1, slength);
+						
+						slength=in[i].length();
+						j--;
+					}
+					
+				}
+			}
+			
+		}
+		
+
+		for(int i = 0; i < in.length;i++) // rebuilds string from string array
+		{
+			if(in[i].length() == 0) output = output + "\n"; //new line
+
+			else
+			{
+				output = output + in[i] + "\n";
+			}
+
+		}
+		
+		//debugging
+		/*
+		System.out.print(output);
+		System.out.print("test");
+		*/
+		output=output.substring(0, output.length()-1);
+		return output;
+	}
 }
