@@ -84,6 +84,7 @@ public class main extends JFrame {
 		final JTextArea textArea = new JTextArea();// top text box
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
+		textArea.setFont(textArea.getFont().deriveFont(16f));
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		contentPane.add(scrollPane_1, "cell 0 2,grow");
