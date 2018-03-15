@@ -39,14 +39,98 @@ public class Helper //dump all helper methods here
 	}
 	
 	
-	public void statcalc(JTextArea textArea_1)
+	public void statcalc(JTextArea textArea_1,String text)
 	{
-		int wordspr = 4;
-        int linespr = 5;
-        int emptyln = 2;
-        int aveli = 32;
-        int avewo = 10;
-
+		//stats to be returned
+		int wordspr = 0;
+        int linespr = 0;
+        int emptyln = 0;
+        double aveli = 0;
+        double avewo = 0;
+        int i = 0;
+        //letter being checked
+        char letter = text.charAt(0);
+        char prev = 0; 
+        //stats for averages
+        int characters = 0;
+        int linearray[];
+        int size;
+        int words = 0;
+        
+        //loop to find total characters words and lines
+        for(i = 0; i < text.length(); i++)
+        {
+        	//set previousletter
+        	if(i > 0)
+        	{
+        		prev = text.charAt(i - 1);
+        	}
+        	letter = text.charAt(i);
+        	//characters processed
+        	if((letter != '\0')&&(letter != '\n'))
+        	{
+        		characters++;
+        	}
+        	//words processed
+        	if( ((letter == ' ')||(letter == '\n')||(letter == '\0')) && ( ((prev > 64)&&(prev < 91)) || ((prev > 96)&&(prev < 123)) ))  
+        	{
+        		wordspr++;
+        	}
+        	//lines processed
+        	if((letter == '\n')||(letter == '\0'))
+        	{
+        		linespr++;
+        	}
+        	//emptyln
+        	if(( (prev == '\n') && ( (letter == '\n') || (letter == '\0') ) ))
+        	{
+        		emptyln++;
+        	}
+        	
+        }
+        //calculating averages
+        size = linespr - emptyln;
+        linearray = new int[size];
+        int index = 0;
+        for(i = 0; i< text.length(); i++)
+        {
+        	if(i > 0)
+        	{
+        		prev = text.charAt(i - 1);
+        	}
+        	letter = text.charAt(i);
+        	if( ((letter == ' ')||(letter == '\n')||(letter == '\0')) && ( ((prev > 64)&&(prev < 91)) || ((prev > 96)&&(prev < 123)) ))  
+        	{
+        		words++;
+        	}
+        	if((letter == '\n')&&(index < size))
+        	{
+        		//store value and increment if line is not empty
+        		if(words != 0)
+        		{
+        			linearray[index] = words;
+        			words = 0;
+        			index++;
+        		}
+        	}
+        }
+        System.out.println("\n" + "Array Size: " + size + "\n");
+        
+        words = 0;
+        for(i = 0; i < size; i++)
+        {
+        	words += linearray[i];
+        }
+        
+        avewo = (words * 1.0)/size;
+        
+        for(i = 0; i < size; i++)
+        {
+        	System.out.println(linearray[i]);
+        }
+        
+        
+        
         textArea_1.append("Words Processed: " + wordspr + "\n");
         textArea_1.append("Number of Lines Processed: " + linespr + "\n");
         textArea_1.append("Number of Empty Lines Removed: " + emptyln + "\n");
