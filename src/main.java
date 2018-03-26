@@ -22,11 +22,16 @@ import java.io.*;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 
 public class main extends JFrame {
 
 	private JPanel contentPane;
 	private final ButtonGroup justification = new ButtonGroup();
+	private final ButtonGroup spacing = new ButtonGroup();
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -50,7 +55,7 @@ public class main extends JFrame {
 	 */
 	public main() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 709, 567);
+		setBounds(100, 100, 870, 567);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -77,6 +82,32 @@ public class main extends JFrame {
 
 		toolBar.add(rdbtnNewRadioButton_1);
 		justification.add(rdbtnNewRadioButton_1);
+		
+		JRadioButton rdbtnFullJustification = new JRadioButton("Full Justification    ");
+		justification.add(rdbtnFullJustification);
+		toolBar.add(rdbtnFullJustification);
+		
+		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Single spaced");
+		rdbtnNewRadioButton_2.setSelected(true);
+		spacing.add(rdbtnNewRadioButton_2);
+
+		toolBar.add(rdbtnNewRadioButton_2);
+		
+		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("Double Spaced     ");
+		spacing.add(rdbtnNewRadioButton_3);
+		toolBar.add(rdbtnNewRadioButton_3);
+		
+		JLabel lblLineLength = new JLabel("Line length:");
+		toolBar.add(lblLineLength);
+		
+		JPanel panel = new JPanel();
+		toolBar.add(panel);
+		panel.setLayout(null);
+		
+		textField = new JTextField();
+		textField.setBounds(0, 0, 35, 25);
+		panel.add(textField);
+		textField.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, "cell 0 1,grow");
