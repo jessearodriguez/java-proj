@@ -25,6 +25,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class main extends JFrame {
 
@@ -105,6 +107,8 @@ public class main extends JFrame {
 		panel.setLayout(null);
 		
 		textField = new JTextField();
+		
+		textField.setText("80");
 		textField.setBounds(0, 0, 35, 25);
 		panel.add(textField);
 		textField.setColumns(10);
@@ -129,6 +133,29 @@ public class main extends JFrame {
 		final JFileChooser filepicker= new JFileChooser();
 		
 		final Helper helper = new Helper(); //helper object that calls all methods
+		
+		textField.addKeyListener(new KeyAdapter() // text field listener for variable line length box, only activates on enter press
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				int linelength=0;
+				if(e.getKeyCode()==KeyEvent.VK_ENTER)
+				{
+					try
+					{
+						linelength = Integer.parseInt(textField.getText());
+						System.out.print(linelength + "\n");
+					}
+					catch(Exception exep)
+					{
+						JOptionPane.showMessageDialog(null, "Please enter a valid input.");
+					}
+					
+					
+				}
+			}
+		});
 		
 		rdbtnNewRadioButton_1.addActionListener(new ActionListener() //right justify radio button
 		{
