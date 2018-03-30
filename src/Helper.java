@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JTextArea;
 
 public class Helper //dump all helper methods here
@@ -103,7 +104,7 @@ public class Helper //dump all helper methods here
 		return output;
 	}
 
-	public int preemptycalc(String text)
+	public void preemptycalc(String text)
 	{
 		int empty=0;
 		char prev = 0; 
@@ -125,16 +126,16 @@ public class Helper //dump all helper methods here
 	    
 		 }
 
-		return empty;
+		emptylines = empty;
 	}
-	public void statcalc(JTextArea textArea_1,String text,int empty)
+	public void statcalc(JTextArea textArea_1,String text)
 	{
 		textArea_1.setText("");//clears text area in preparation for next analysis
 		
 		//stats to be returned
 		int wordspr = 0;
         int linespr = 0;
-        int emptyln = empty;
+        int emptyln = emptylines;
         double aveli = 0;
         double avewo = 0;
         int i = 0;
@@ -242,7 +243,7 @@ public class Helper //dump all helper methods here
 	}
 
 
-	public String formatText(String text) //assuming all first spaces removed by ljustify
+	public String formatText(String text, int linelength) //assuming all first spaces removed by ljustify
 	{
 		StringBuilder input = new StringBuilder();
 		
@@ -261,7 +262,7 @@ public class Helper //dump all helper methods here
 					lastchar = text.charAt(i);
 					currlincount++; //increase count for line word count
 					
-					if(currlincount>=80)
+					if(currlincount>=linelength)
 					{
 						j = i;
 						while(text.charAt(j)!= ' ')//navigates to the last space

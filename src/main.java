@@ -75,28 +75,33 @@ public class main extends JFrame {
 		toolBar.add(btnNewButton_1);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Left justification");
-
+		
 		toolBar.add(rdbtnNewRadioButton);
 		rdbtnNewRadioButton.setSelected(true);
+		rdbtnNewRadioButton.setActionCommand("lj");
 		justification.add(rdbtnNewRadioButton);
 		
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Right Justification");
 
 		toolBar.add(rdbtnNewRadioButton_1);
+		rdbtnNewRadioButton_1.setActionCommand("rj");
 		justification.add(rdbtnNewRadioButton_1);
 		
 		JRadioButton rdbtnFullJustification = new JRadioButton("Full Justification    ");
 		justification.add(rdbtnFullJustification);
+		rdbtnFullJustification.setActionCommand("fj");
 		toolBar.add(rdbtnFullJustification);
 		
 		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Single spaced");
 		rdbtnNewRadioButton_2.setSelected(true);
+		rdbtnNewRadioButton_2.setActionCommand("ss");
 		spacing.add(rdbtnNewRadioButton_2);
 
 		toolBar.add(rdbtnNewRadioButton_2);
 		
 		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("Double Spaced     ");
 		spacing.add(rdbtnNewRadioButton_3);
+		rdbtnNewRadioButton_3.setActionCommand("ds");
 		toolBar.add(rdbtnNewRadioButton_3);
 		
 		JLabel lblLineLength = new JLabel("Line length:");
@@ -134,24 +139,47 @@ public class main extends JFrame {
 		
 		final Helper helper = new Helper(); //helper object that calls all methods
 		
+		
+		// start of listeners 
+		
+		
 		textField.addKeyListener(new KeyAdapter() // text field listener for variable line length box, only activates on enter press
 		{
 			@Override
+
 			public void keyPressed(KeyEvent e) 
 			{
 				int linelength=0;
+				int emptylines=helper.emptylines;
+				int casecode=0b0000;
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					try
 					{
 						linelength = Integer.parseInt(textField.getText());
-						System.out.print(linelength + "\n");
+						//System.out.print(justification.getSelection().getActionCommand()+"\n");
+						casecode=helper.generatecode(justification, spacing);
+						switch (casecode)
+						{
+						//ds
+						case 0b0001: break;
+						case 0b0010: break;
+						case 0b0100: break;
+					//ss
+						case 0b1001: break;
+						case 0b1010: break;
+						case 0b1100: break;
+						default: break;
+						
+						}
+						
+						
+						//textArea.setText(helper.formatText(helper.text, linelength));
 					}
 					catch(Exception exep)
 					{
 						JOptionPane.showMessageDialog(null, "Please enter a valid input.");
 					}
-					
 					
 				}
 			}
@@ -162,6 +190,7 @@ public class main extends JFrame {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				textArea.setText(helper.rjustify(textArea.getText()));
+				//helper.text=textArea.getText();
 			}
 		});
 		
@@ -170,6 +199,7 @@ public class main extends JFrame {
 			public void actionPerformed(ActionEvent e) 
 			{
 				textArea.setText(helper.ljustify(textArea.getText()));
+				//helper.text=textArea.getText();
 			}
 		});
 		btnNewButton.addActionListener(new ActionListener() //open button interrupt
@@ -180,7 +210,7 @@ public class main extends JFrame {
 			FileReader fread;
 			BufferedReader buffreader;
 			String text;
-			
+
 			StringBuilder builder = new StringBuilder();
 			
 		
@@ -207,9 +237,10 @@ public class main extends JFrame {
 						
 						
 						
-						textArea.setText(helper.formatText(helper.ljustify(text)));
-						
-						helper.statcalc(textArea_1,textArea.getText(),helper.preemptycalc(text));
+						textArea.setText(helper.formatText(helper.ljustify(text),80));
+						helper.preemptycalc(text);
+						helper.text=textArea.getText();
+						helper.statcalc(textArea_1,textArea.getText());
 						//textArea.setText(text);
 						
 						buffreader.close();
