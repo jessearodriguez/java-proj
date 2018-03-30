@@ -7,6 +7,35 @@ import javax.swing.JTextArea;
 
 public class Helper //dump all helper methods here
 {
+	public int emptylines=0;
+	public String text="";
+	public int generatecode(ButtonGroup just, ButtonGroup spacing)
+	{
+		int code=0b0000;
+		if(just.getSelection().getActionCommand()=="lj")
+		{
+			code=0b0001;
+		}
+		else if(just.getSelection().getActionCommand()=="rj")
+		{
+			code = 0b0010;
+		}
+		else if(just.getSelection().getActionCommand()=="fj")
+		{
+			code = 0b0100;
+		}
+		
+		if(spacing.getSelection().getActionCommand()=="ss")
+		{
+			code |= 0b1000;
+		}
+		else if(spacing.getSelection().getActionCommand()=="ds")
+		{
+			code &= 0b0111;
+		}
+		//format, code = 4 binary number, 1st bit = spacing, next 3 = justificaions
+		return code;
+	}
 	public String rjustify(String input) //assuming max is 80 characters per line, already formatted, justifies right
 	{
 		String[] in = input.split("\\r?\\n",-1); //handles windows and java new line decleration, splits every line into its own array, including empty lines
