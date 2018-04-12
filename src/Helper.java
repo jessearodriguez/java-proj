@@ -148,10 +148,18 @@ public class Helper //dump all helper methods here
 	        	prev = text.charAt(i - 1);
 	        }	
 	        letter = text.charAt(i);
-			if(((prev == '\n') && ( (letter == '\n') || (letter == '\0') ) ))
+	        
+			if(((prev == '\n') && ( (letter == '\n') ) ))
 	    	{
 	    		empty++;
 	    	}
+			if((prev == '\n')&&(letter == '\0'))
+			{
+				// debugging
+				System.out.println("End of Text i:" + i);
+				empty++;
+			}
+
 	    
 		 }
 
@@ -189,29 +197,19 @@ public class Helper //dump all helper methods here
         	}
         	letter = text.charAt(i);
         	//characters processed
-        	if((letter != '\0')&&(letter != '\n'))
+        	if((letter != '\n'))
         	{
         		characters++;
         	}
         	//words processed
-        	if( ((letter == ' ')||(letter == '\n')||(letter == '\0')) && ( ((prev > 64)&&(prev < 91)) || ((prev > 96)&&(prev < 123)) ))  
+        	if(((letter == ' ')||(letter == '\n') && ( ((prev > 64)&&(prev < 91)) || ((prev > 96)&&(prev < 123)) )) ) 
         	{
         		wordspr++;
         	}
-        	//lines processed
-        	if((letter == '\n')||(letter == '\0'))
-        	{
-        		linespr++;
-        	}
-        	//emptyln
-        	/*
-        	if(( (prev == '\n') && ( (letter == '\n') || (letter == '\0') ) ))
-        	{
-        		emptyln++;
-        	}
-        	*/
         }
+        
         //calculating averages
+        linespr = in.length;
         size = linespr - emptyln;
         linearray = new int[size];
         int index = 0;
@@ -222,7 +220,7 @@ public class Helper //dump all helper methods here
         		prev = text.charAt(i - 1);
         	}
         	letter = text.charAt(i);
-        	if( ((letter == ' ')||(letter == '\n')||(letter == '\0')) && ( ((prev > 64)&&(prev < 91)) || ((prev > 96)&&(prev < 123)) ))  
+        	if( ((letter == ' ')||(letter == '\n')) && ( ((prev > 64)&&(prev < 91)) || ((prev > 96)&&(prev < 123)) ||((prev > 47)&&(prev < 58))))  
         	{
         		words++;
         	}
