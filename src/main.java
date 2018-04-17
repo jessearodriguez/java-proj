@@ -168,6 +168,7 @@ public class main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int casecode=helper.generatecode(justification, spacing);
 				System.out.print(casecode);
+				helper.ds = false;
 				switch (casecode)
 				{
 				

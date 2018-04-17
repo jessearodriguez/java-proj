@@ -10,7 +10,7 @@ public class Helper //dump all helper methods here
 	public int emptylines=0;
 	public String text="";
 	public int linelength=80;
-	
+	public boolean ds = false;
 	public String fjust(String input)
 	{
 		int spacesneeded=0;//diff between line length and actual line length
@@ -76,7 +76,10 @@ public class Helper //dump all helper methods here
 	
 	public String doublespace(String text)
 	{
+		
 		StringBuilder output = new StringBuilder();
+		if(ds==false)
+		{
 		for(int i =0;i<text.length();i++)
 		{
 			if(text.charAt(i)=='\n')
@@ -89,6 +92,15 @@ public class Helper //dump all helper methods here
 
 			
 		}
+		}
+		else
+		{
+			for(int i =0;i<text.length();i++)
+			{
+					output.append(text.charAt(i));//else append the char normally	
+			}
+		}
+		ds = true;
 		return output.toString();
 	}
 	
