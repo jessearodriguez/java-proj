@@ -201,6 +201,8 @@ public class main extends JFrame {
 			public void focusLost(FocusEvent arg0) {
 				try 
 				{
+					//System.out.print(textField.getText());
+					
 					Integer.parseInt(textField.getText());
 					helper.setlength(Integer.parseInt(textField.getText()));
 				}
@@ -224,6 +226,8 @@ public class main extends JFrame {
 				{
 					try
 					{
+						//System.out.print(textField.getText());
+						
 						linelength = Integer.parseInt(textField.getText());
 						helper.linelength = linelength;
 						//System.out.print(justification.getSelection().getActionCommand()+"\n");

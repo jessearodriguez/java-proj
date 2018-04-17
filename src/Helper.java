@@ -92,9 +92,19 @@ public class Helper //dump all helper methods here
 		return output.toString();
 	}
 	
-	public void setlength(int length)
-	{
+	public void setlength(int length) throws Exception
+	{//try 
+	//{
+	
+		if(length>0)
 		linelength = length;
+		
+		else throw new Exception();
+	//}
+	//catch(Exception e)
+	//{
+		
+	//}
 	}
 	public int generatecode(ButtonGroup just, ButtonGroup spacing)
 	{
