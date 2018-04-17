@@ -9,6 +9,93 @@ public class Helper //dump all helper methods here
 {
 	public int emptylines=0;
 	public String text="";
+	public int linelength=80;
+	
+	public String fjust(String input)
+	{
+		int spacesneeded=0;//diff between line length and actual line length
+
+		
+		String[] in = input.split("\\r?\\n",-1); //split string 
+		String output = "";
+		String temp;
+		for(int i =0;i<in.length;i++)//iterate through array to format
+		{
+			if(in[i].length()!=0)
+			{
+				spacesneeded = linelength-in[i].length();
+				temp = in[i];
+				while(spacesneeded!=0)//keep looping through a string if more spaces are still needed
+				{
+					int stlen = temp.length();
+					for(int j = 0;j<stlen;j++)
+					{
+						if(spacesneeded!=0)
+						{
+							if(temp.charAt(j)==' ')
+							{
+								System.out.print("hit");
+								temp = temp.substring(0, j)+" "+ temp.substring(j,stlen);//adds another space to a existing space
+								j++;//needed since shifted
+								spacesneeded--;
+								stlen++;//needed since shifted
+							}
+						}
+						else
+						{}
+					}
+				}
+				in[i]=temp;
+			}
+			else {}
+		}
+		
+
+		for(int i = 0; i < in.length;i++) // rebuilds string from string array
+		{
+			if(in[i].length() == 0) output = output + "\n"; //new line
+			else
+			{
+				output = output + in[i] + "\n";
+			}
+
+		}
+		
+		//debugging
+		/*for(int i = 0; i < in.length;i++) // rebuilds string from string array
+		{
+			System.out.print("\n line length"+in[i].length()+"\n");
+		}
+		*/
+		
+		output=output.substring(0, output.length()-1);
+		return output;
+	}
+	
+	
+	
+	public String doublespace(String text)
+	{
+		StringBuilder output = new StringBuilder();
+		for(int i =0;i<text.length();i++)
+		{
+			if(text.charAt(i)=='\n')
+			{
+				output.append(text.charAt(i)); //double spacing part
+				output.append(text.charAt(i));
+			}
+			else
+				output.append(text.charAt(i));//else append the char normally
+
+			
+		}
+		return output.toString();
+	}
+	
+	public void setlength(int length)
+	{
+		linelength = length;
+	}
 	public int generatecode(ButtonGroup just, ButtonGroup spacing)
 	{
 		int code=0b0000;
@@ -58,12 +145,15 @@ public class Helper //dump all helper methods here
 
 		}
 		*/
+		String formatter="%"+linelength+"s";
+		
 		for(int i = 0; i<in.length;i++)
 		{
 			if(in[i].length()==0) {}
 			else 
 			{
-				in[i]=String.format("%80s", in[i]);
+				
+				in[i]=String.format(formatter, in[i]);
 			}
 		}
 		for(int i = 0; i < in.length;i++) // rebuilds string from string array
@@ -89,7 +179,7 @@ public class Helper //dump all helper methods here
 		
 		for(int i =0; i < in.length;i++) //performs shifting for left justification for each line
 		{
-			if(in[i].length()>80||in[i].length()==0) {}
+			if(in[i].length()>linelength||in[i].length()==0) {}
 			else 
 			{
 				int slength = in[i].length();
@@ -270,7 +360,7 @@ public class Helper //dump all helper methods here
 	}
 
 
-	public String formatText(String text, int linelength) //assuming all first spaces removed by ljustify
+	public String formatText(String text) //assuming all first spaces removed by ljustify
 	{
 		StringBuilder input = new StringBuilder();
 		

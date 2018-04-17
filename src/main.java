@@ -27,6 +27,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class main extends JFrame {
 
@@ -88,11 +90,13 @@ public class main extends JFrame {
 		justification.add(rdbtnNewRadioButton_1);
 		
 		JRadioButton rdbtnFullJustification = new JRadioButton("Full Justification    ");
+		
 		justification.add(rdbtnFullJustification);
 		rdbtnFullJustification.setActionCommand("fj");
 		toolBar.add(rdbtnFullJustification);
 		
 		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Single spaced");
+
 		rdbtnNewRadioButton_2.setSelected(true);
 		rdbtnNewRadioButton_2.setActionCommand("ss");
 		spacing.add(rdbtnNewRadioButton_2);
@@ -100,6 +104,7 @@ public class main extends JFrame {
 		toolBar.add(rdbtnNewRadioButton_2);
 		
 		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("Double Spaced     ");
+		
 		spacing.add(rdbtnNewRadioButton_3);
 		rdbtnNewRadioButton_3.setActionCommand("ds");
 		toolBar.add(rdbtnNewRadioButton_3);
@@ -112,6 +117,7 @@ public class main extends JFrame {
 		panel.setLayout(null);
 		
 		textField = new JTextField();
+		
 		
 		textField.setText("80");
 		textField.setBounds(0, 0, 35, 25);
@@ -141,8 +147,70 @@ public class main extends JFrame {
 		
 		
 		// start of listeners 
+		rdbtnFullJustification.addActionListener(new ActionListener() {//full justificaion listener
+			public void actionPerformed(ActionEvent e) {
+				int casecode=helper.generatecode(justification, spacing);
+				switch (casecode)
+				{
+				case 0b0100: 
+					textArea.setText(helper.doublespace(helper.fjust(helper.formatText(helper.ljustify(helper.text)))));
+					break;
+				case 0b1100: 
+					textArea.setText(helper.fjust(helper.formatText(helper.ljustify(helper.text))));
+					break;//fj
+				default: break;
+				//textArea.setText(helper.fjust(helper.formatText(helper.ljustify(helper.text))));
+				}
+				
+			}
+		});
+		rdbtnNewRadioButton_2.addActionListener(new ActionListener() {//single space listener
+			public void actionPerformed(ActionEvent e) {
+				int casecode=helper.generatecode(justification, spacing);
+				System.out.print(casecode);
+				switch (casecode)
+				{
+				
+			//ss
+				case 0b1001: 
+					textArea.setText(helper.formatText(helper.ljustify(helper.text)));
+					
+					break;//lj
+				case 0b1010: 
+
+					textArea.setText(helper.rjustify(helper.formatText(helper.ljustify(helper.text))));
+					break;//rj
+					
+				case 0b1100: 
+					textArea.setText(helper.fjust(helper.formatText(helper.ljustify(helper.text))));
+					break;//fj
+				default: break;
+				}
+				
+			}
+		});
+		rdbtnNewRadioButton_3.addActionListener(new ActionListener() {//double space listener
+			public void actionPerformed(ActionEvent arg0) {
+				textArea.setText(helper.doublespace(textArea.getText()));
+				
+			}
+		});
 		
-		
+		textField.addFocusListener(new FocusAdapter() {//focus listener
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				try 
+				{
+					Integer.parseInt(textField.getText());
+					helper.setlength(Integer.parseInt(textField.getText()));
+				}
+				catch(Exception e)
+				{
+					JOptionPane.showMessageDialog(null, "Please enter a valid input.");
+					textField.requestFocus();
+				}
+			}
+		});
 		textField.addKeyListener(new KeyAdapter() // text field listener for variable line length box, only activates on enter press
 		{
 			@Override
@@ -150,29 +218,46 @@ public class main extends JFrame {
 			public void keyPressed(KeyEvent e) 
 			{
 				int linelength=0;
-				int emptylines=helper.emptylines;
+				//int emptylines=helper.emptylines;
 				int casecode=0b0000;
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					try
 					{
 						linelength = Integer.parseInt(textField.getText());
+						helper.linelength = linelength;
 						//System.out.print(justification.getSelection().getActionCommand()+"\n");
 						casecode=helper.generatecode(justification, spacing);
-						switch (casecode)
+						switch (casecode) //basically re-applying formats in a specific order because im lazy and dont want it to be able to read in any format and output any format
 						{
 						//ds
-						case 0b0001: break;
-						case 0b0010: break;
-						case 0b0100: break;
+						case 0b0001: 
+							textArea.setText(helper.doublespace(helper.formatText(helper.ljustify(helper.text))));
+							break;
+						case 0b0010: 
+							textArea.setText(helper.doublespace(helper.rjustify(helper.formatText(helper.ljustify(helper.text)))));
+							break;
+						case 0b0100: 
+							textArea.setText(helper.doublespace(helper.fjust(helper.formatText(helper.ljustify(helper.text)))));
+							break;
 					//ss
-						case 0b1001: break;
-						case 0b1010: break;
-						case 0b1100: break;
+						case 0b1001: 
+							textArea.setText(helper.formatText(helper.ljustify(helper.text)));
+							
+							break;//lj
+						case 0b1010: 
+
+							textArea.setText(helper.rjustify(helper.formatText(helper.ljustify(helper.text))));
+							break;//rj
+							
+						case 0b1100: 
+							textArea.setText(helper.fjust(helper.formatText(helper.ljustify(helper.text))));
+							break;//fj
 						default: break;
 						
 						}
 						
+						helper.statcalc(textArea_1,helper.formatText(helper.ljustify(helper.text)));
 						
 						//textArea.setText(helper.formatText(helper.text, linelength));
 					}
@@ -189,7 +274,22 @@ public class main extends JFrame {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				textArea.setText(helper.rjustify(textArea.getText()));
+				int casecode=helper.generatecode(justification, spacing);
+				switch (casecode)
+				{
+				case 0b0010: //ds
+					textArea.setText(helper.doublespace(helper.rjustify(helper.formatText(helper.ljustify(helper.text)))));
+					break;
+				case 0b1010: //ss
+
+					textArea.setText(helper.rjustify(helper.formatText(helper.ljustify(helper.text))));
+					break;//rj
+				default: break;
+				}
+				
+				
+				
+				//textArea.setText(helper.rjustify(helper.formatText(helper.ljustify(helper.text))));
 				//helper.text=textArea.getText();
 			}
 		});
@@ -198,10 +298,23 @@ public class main extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				textArea.setText(helper.ljustify(textArea.getText()));
+				int casecode=helper.generatecode(justification, spacing);
+				switch (casecode)
+				{
+				case 0b0001: 
+					textArea.setText(helper.doublespace(helper.formatText(helper.ljustify(helper.text))));
+					break;
+				case 0b1001: 
+					textArea.setText(helper.formatText(helper.ljustify(helper.text)));
+					
+					break;//lj
+				default: break;
+				}
+				//textArea.setText(helper.formatText(helper.ljustify(helper.text)));
 				//helper.text=textArea.getText();
 			}
 		});
+		
 		btnNewButton.addActionListener(new ActionListener() //open button interrupt
 		{
 			
@@ -237,9 +350,10 @@ public class main extends JFrame {
 						
 						
 						
-						textArea.setText(helper.formatText(helper.ljustify(text),80));
+						textArea.setText(helper.formatText(helper.ljustify(text)));
 						helper.preemptycalc(text);
-						helper.text=textArea.getText();
+						helper.text=text;//bare text no formatting storage
+						
 						helper.statcalc(textArea_1,textArea.getText());
 						//textArea.setText(text);
 						
